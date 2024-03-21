@@ -2,9 +2,6 @@ import { ADD_DAYS_BUTTON, DAYS_LIST } from './constants/selectors'
 import './style.css'
 import { $ } from './utils/dom'
 
-const addDaysButton = $(ADD_DAYS_BUTTON)
-
-
 function getDaysListElement() {
   const currentDaysList = $(DAYS_LIST)
   return currentDaysList ? currentDaysList : createDaysList()
@@ -21,7 +18,10 @@ function createDaysList() {
 
 function setupAddDaysButton() {
   let days = 0
+  const addDaysButton = $(ADD_DAYS_BUTTON)
   addDaysButton.addEventListener('click', function () {
     const daysListElement = getDaysListElement()
   })
 }
+
+setupAddDaysButton()
