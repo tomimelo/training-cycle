@@ -1,0 +1,31 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  color: rgb(255, 255, 255);
+  background-color: #242424;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button.add-day {
+  background-color: transparent;
+  border: 2px solid white;
+  color: inherit;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: .4rem .8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: black;
+    background-color: rgb(255, 255, 255);
+  }
+}
