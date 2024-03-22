@@ -20,6 +20,7 @@ function createDaysList() {
 function setupAddDaysButton() {
   let days = 0
   const addDaysButton = $(ADD_DAYS_BUTTON)
+
   addDaysButton.addEventListener('click', function () {
     const daysListElement = getDaysListElement()
     const trainingDay = TrainingDay(++days)
