@@ -1,3 +1,5 @@
+import './style.css'
+
 export function TrainingDay(day) {
   let onRemove = () => {}
 
@@ -37,13 +39,13 @@ function createTrainingDayLabel(day) {
 function createTrainingDayInput() {
   const input = document.createElement('input')
   input.setAttribute('type', 'text')
+  input.setAttribute('required', '')
   return input
 }
 
 function createRemoveButton() {
   const button = document.createElement('button')
   button.setAttribute('type', 'button')
-  button.classList.add('button')
   button.innerText = '❌'
 
   return button
