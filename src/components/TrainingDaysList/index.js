@@ -1,0 +1,68 @@
+import './style.css'
+import { $, $$ } from '../../utils/dom'
+import { TrainingDay } from '../TrainingDay'
+
+export class TrainingDaysList {
+  _days = 0;
+  _element;
+  daysChanged = () => { }
+
+  get element() {
+    if (this._element) {
+      return this._element
+    }
+    this._setElement()
+    return this._element
+  }
+
+  set element(e) {
+    this._element = e
+    const trainingCycleDescription = $('div.training-cycle h2')
+    trainingCycleDescription.after(this._element)
+  }
+
+  constructor() {
+  }
+
+  static selector = 'form.training-days-list'
+
+  addDay() {
+    const trainingDay = TrainingDay(++this._days)
+    const trainingDayElement = trainingDay.getElement()
+
+    trainingDay.onRemove(() => {
+      this._days = Math.max(0, --this._days)
+      this._recomputeDays()
+      this._emitDaysChanged()
+    })
+
+    this.element.appendChild(trainingDayElement)
+    this._emitDaysChanged()
+  }
+
+  onDaysChanged(listener) {
+    this.daysChanged = listener
+  }
+
+  _emitDaysChanged() {
+    this.daysChanged(this._days)
+  }
+
+  _setElement() {
+    const element = TrainingDaysList.new()
+    this.element = element
+  }
+
+  _recomputeDays() {
+    const dayLabels = $$('span.training-day-label')
+    dayLabels.forEach((label, index) => {
+      label.innerText = `Day ${index + 1}`
+    })
+  }
+}
+
+TrainingDaysList.new = function () {
+  const daysList = document.createElement('form')
+  daysList.classList.add('training-days-list', 'flex-column', 'flex-center')
+  return daysList
+}
