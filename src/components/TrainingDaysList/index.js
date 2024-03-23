@@ -5,7 +5,7 @@ import { TrainingDay } from '../TrainingDay'
 export class TrainingDaysList {
   _days = 0;
   _element;
-  daysChanged = () => { }
+  daysChanged = () => {}
 
   get element() {
     if (this._element) {
@@ -21,14 +21,11 @@ export class TrainingDaysList {
     trainingCycleDescription.after(this._element)
   }
 
-  constructor() {
-  }
-
   static selector = 'form.training-days-list'
 
   addDay() {
-    const trainingDay = TrainingDay(++this._days)
-    const trainingDayElement = trainingDay.getElement()
+    const trainingDay = new TrainingDay(++this._days)
+    const trainingDayElement = trainingDay.element
 
     trainingDay.onRemove(() => {
       this._days = Math.max(0, --this._days)
@@ -49,7 +46,7 @@ export class TrainingDaysList {
   }
 
   _setElement() {
-    const element = TrainingDaysList.new()
+    const element = this._create()
     this.element = element
   }
 
@@ -59,10 +56,10 @@ export class TrainingDaysList {
       label.innerText = `Day ${index + 1}`
     })
   }
-}
 
-TrainingDaysList.new = function () {
-  const daysList = document.createElement('form')
-  daysList.classList.add('training-days-list', 'flex-column', 'flex-center')
-  return daysList
+  _create() {
+    const form = document.createElement('form')
+    form.classList.add('training-days-list', 'flex-column', 'flex-center')
+    return form
+  }
 }
