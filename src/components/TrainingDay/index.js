@@ -12,10 +12,11 @@ export function TrainingDay(day) {
   const input = createTrainingDayInput()
   element.appendChild(input)
 
-  const button = createRemoveButton()
-  element.appendChild(button)
+  const removeButton = createRemoveButton()
+  element.appendChild(removeButton)
 
-  button.addEventListener('click', () => {
+  removeButton.addEventListener('click', () => {
+    element.remove()
     onRemove()
   })
 

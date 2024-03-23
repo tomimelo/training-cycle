@@ -1,10 +1,18 @@
-import { $, $$, replaceContent } from '../../utils/dom'
-import { TrainingDay } from '../TrainingDay'
-import { APP, ADD_DAYS_BUTTON, CONFIRM_CYCLE, DAYS_LIST } from '../../constants/selectors'
 import './style.css'
+import { $, replaceContent } from '../../utils/dom';
+import { ADD_TRAINING_DAY_BUTTON, APP, CONFIRM_CYCLE } from '../../constants/selectors';
+import { TrainingDaysList } from '../TrainingDaysList';
 
 export function TrainingCycle() {
   const content = TrainingCycle.new()
+
+  function createConfirmCycleButton() {
+    const button = document.createElement('button')
+    button.innerText = 'Continue'
+    button.classList.add('confirm-cycle', 'button', 'full-width')
+
+    return button
+  }
 
   return {
     render: function () {
@@ -13,7 +21,25 @@ export function TrainingCycle() {
       this._init()
     },
     _init: function () {
-      setupAddDaysButton()
+      const trainingDaysList = new TrainingDaysList()
+      const addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON)
+
+      addTrainingDayButton.addEventListener('click', function () {
+        trainingDaysList.addDay()
+      })
+
+      trainingDaysList.onDaysChanged((days) => {
+        const button = $(CONFIRM_CYCLE)
+
+        if (days && !button) {
+          const createdButton = createConfirmCycleButton()
+          $(TrainingCycle.selector).appendChild(createdButton)
+        }
+
+        if (!days && button) {
+          button.remove()
+        }
+      })
     }
   }
 }
@@ -24,72 +50,11 @@ TrainingCycle.new = function () {
       <h1>Training cycle 💪🏼</h1>
       <div class="training-cycle flex-column flex-center">
         <h2>Add your training cycle</h2>
-        <button class="add-day full-width">+ Add day</button>
+        <button class="add-training-day full-width">+ Add day</button>
       </div>
   `
 
   return Array.from(wrapper.children)
 }
 
-function getDaysListElement() {
-  const currentDaysList = $(DAYS_LIST)
-  return currentDaysList ? currentDaysList : createDaysList()
-}
-
-function createDaysList() {
-  const trainingCycleDescription = $('div.training-cycle h2')
-  const daysList = document.createElement('form')
-  daysList.classList.add('days-cycle-list', 'flex-column', 'flex-center')
-
-  trainingCycleDescription.after(daysList)
-  return daysList
-}
-
-function setupAddDaysButton() {
-  let days = 0
-  const addDaysButton = $(ADD_DAYS_BUTTON)
-
-  addDaysButton.addEventListener('click', function () {
-    const daysListElement = getDaysListElement()
-    const trainingDay = TrainingDay(++days)
-    const trainingDayElement = trainingDay.getElement()
-
-    trainingDay.onRemove(() => {
-      trainingDayElement.remove()
-      days = Math.max(0, --days)
-      recomputeDays()
-      updateContinueButton(days)
-    })
-
-    daysListElement.appendChild(trainingDayElement)
-    updateContinueButton(days)
-  })
-}
-
-function recomputeDays() {
-  const dayLabels = $$('span.training-day-label')
-  dayLabels.forEach((label, index) => {
-    label.innerText = `Day ${index + 1}`
-  })
-}
-
-function updateContinueButton(days) {
-  const button = $(CONFIRM_CYCLE)
-
-  if (days && !button) {
-    const createdButton = createConfirmCycleButton()
-    $(ADD_DAYS_BUTTON).after(createdButton)
-  }
-
-  if (!days && button) {
-    button.remove()
-  }
-}
-
-function createConfirmCycleButton() {
-  const button = document.createElement('button')
-  button.innerText = 'Continue'
-  button.classList.add('confirm-cycle', 'button', 'full-width')
-
-  return button
-}
+TrainingCycle.selector = 'div.training-cycle'
