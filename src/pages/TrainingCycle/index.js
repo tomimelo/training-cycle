@@ -1,7 +1,7 @@
 import './style.css'
 import { $ } from '../../utils/dom';
 import { ADD_TRAINING_DAY_BUTTON, CONFIRM_CYCLE } from '../../constants/selectors';
-import { TrainingDaysListComponent } from '../TrainingDaysList';
+import { TrainingDaysListComponent } from '../../components/TrainingDaysList';
 
 export class TrainingCyclePage {
   static selector = 'div.training-cycle'

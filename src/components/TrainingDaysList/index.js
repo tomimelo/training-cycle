@@ -1,8 +1,8 @@
 import './style.css'
 import { $, $$ } from '../../utils/dom'
-import { TrainingDay } from '../TrainingDay'
+import { TrainingDayComponent } from '../TrainingDay'
 
-export class TrainingDaysList {
+export class TrainingDaysListComponent {
   _days = 0;
   _element;
   daysChanged = () => {}
@@ -24,7 +24,7 @@ export class TrainingDaysList {
   static selector = 'form.training-days-list'
 
   addDay() {
-    const trainingDay = new TrainingDay(++this._days)
+    const trainingDay = new TrainingDayComponent(++this._days)
     const trainingDayElement = trainingDay.element
 
     trainingDay.onRemove(() => {

@@ -1,6 +1,6 @@
 import './style.css'
 
-export class TrainingDay {
+export class TrainingDayComponent {
   element;
   removed = () => {}
 
