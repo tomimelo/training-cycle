@@ -1,8 +1,11 @@
+import { pickRandom } from '../../utils/functions'
 import './style.css'
+
+const TRAINING_EXAMPLES = ['Push', 'Pull', 'Legs', 'Arms', 'Chest & Biceps', 'Back & Triceps', 'Full-body', 'Back', 'Chest', 'Cardio', 'Abs']
 
 export class TrainingDayComponent {
   element
-  removed = () => {}
+  removed = () => { }
 
   constructor(num) {
     this.element = this._create(num)
@@ -45,6 +48,7 @@ export class TrainingDayComponent {
     input.setAttribute('type', 'text')
     input.setAttribute('name', `day-${num}`)
     input.setAttribute('required', '')
+    input.setAttribute('placeholder', pickRandom(TRAINING_EXAMPLES))
     return input
   }
 
