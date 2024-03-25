@@ -14,11 +14,16 @@ export class TrainingDaysFormComponent {
   constructor() {
     this.element = $(TrainingDaysFormComponent.selector)
     this._addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON)
-    this._setupListeners()
+    this._init()
   }
 
   onConfirm(listener) {
     this.confirmed = listener
+  }
+
+  _init() {
+    Array.from({length: 4}).forEach(() => {this._addDay()})
+    this._setupListeners()
   }
 
   _setupListeners() {
@@ -33,7 +38,7 @@ export class TrainingDaysFormComponent {
   _getFormValues() {
     const formData = new FormData(this.element)
     const [startDate, ...trainings] = Array.from(formData.values())
-    return {startDate, trainings}
+    return { startDate, trainings }
   }
 
   _addDay() {
