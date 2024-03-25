@@ -8,7 +8,7 @@ export function $$(selector, context = document) {
 
 export function render(context, content) {
   context.innerHtml = ''
-  content.forEach(element => {
+  content.forEach((element) => {
     context.appendChild(element)
   })
 }

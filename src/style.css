@@ -4,7 +4,7 @@
   color: rgb(255, 255, 255);
   background-color: #242424;
   box-sizing: border-box;
-  --padding: .4rem .8rem;
+  --padding: 0.4rem 0.8rem;
 }
 
 body {
@@ -39,7 +39,7 @@ button {
   padding: var(--padding);
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     color: black;
     background-color: rgb(255, 255, 255);

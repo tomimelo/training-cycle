@@ -3,8 +3,8 @@ import { $, $$ } from '../../utils/dom'
 import { TrainingDayComponent } from '../TrainingDay'
 
 export class TrainingDaysListComponent {
-  _days = 0;
-  _element;
+  _days = 0
+  _element
   daysChanged = () => {}
 
   get element() {

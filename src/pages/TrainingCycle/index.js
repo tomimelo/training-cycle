@@ -1,12 +1,15 @@
 import './style.css'
-import { $ } from '../../utils/dom';
-import { ADD_TRAINING_DAY_BUTTON, CONFIRM_CYCLE } from '../../constants/selectors';
-import { TrainingDaysListComponent } from '../../components/TrainingDaysList';
+import { $ } from '../../utils/dom'
+import {
+  ADD_TRAINING_DAY_BUTTON,
+  CONFIRM_CYCLE,
+} from '../../constants/selectors'
+import { TrainingDaysListComponent } from '../../components/TrainingDaysList'
 
 export class TrainingCyclePage {
   static selector = 'div.training-cycle'
 
-  content;
+  content
 
   constructor() {
     this.content = this._create()
@@ -16,19 +19,19 @@ export class TrainingCyclePage {
     const wrapper = this._createWrapper()
     const trainingDaysList = new TrainingDaysListComponent()
     const addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON, wrapper)
-  
+
     addTrainingDayButton.addEventListener('click', function () {
       trainingDaysList.addDay()
     })
-  
+
     trainingDaysList.onDaysChanged((days) => {
       const button = $(CONFIRM_CYCLE)
-  
+
       if (days && !button) {
         const createdButton = this._createConfirmCycleButton()
         $(TrainingCyclePage.selector).appendChild(createdButton)
       }
-  
+
       if (!days && button) {
         button.remove()
       }

@@ -1,7 +1,7 @@
 import './style.css'
 
 export class TrainingDayComponent {
-  element;
+  element
   removed = () => {}
 
   constructor(num) {
@@ -15,16 +15,16 @@ export class TrainingDayComponent {
   _create(num) {
     const element = document.createElement('div')
     element.classList.add('training-day', 'flex-center')
-  
+
     const label = this._createLabel(num)
     element.appendChild(label)
-  
+
     const input = this._createInput()
     element.appendChild(input)
-  
+
     const removeButton = this._createRemoveButton()
     element.appendChild(removeButton)
-  
+
     removeButton.addEventListener('click', () => {
       this.element.remove()
       this.removed()
@@ -51,7 +51,7 @@ export class TrainingDayComponent {
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
     button.innerText = '❌'
-  
+
     return button
-  } 
+  }
 }
