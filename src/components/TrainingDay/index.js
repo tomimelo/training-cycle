@@ -19,7 +19,7 @@ export class TrainingDayComponent {
     const label = this._createLabel(num)
     element.appendChild(label)
 
-    const input = this._createInput()
+    const input = this._createInput(num)
     element.appendChild(input)
 
     const removeButton = this._createRemoveButton()
@@ -40,9 +40,10 @@ export class TrainingDayComponent {
     return span
   }
 
-  _createInput() {
+  _createInput(num) {
     const input = document.createElement('input')
     input.setAttribute('type', 'text')
+    input.setAttribute('name', `day${num}`)
     input.setAttribute('required', '')
     return input
   }

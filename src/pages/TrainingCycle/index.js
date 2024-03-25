@@ -24,7 +24,7 @@ export class TrainingCyclePage {
       trainingDaysList.addDay()
     })
 
-    trainingDaysList.onDaysChanged((days) => {
+    trainingDaysList.onDaysChange((days) => {
       const button = $(CONFIRM_CYCLE)
 
       if (days && !button) {
@@ -37,6 +37,10 @@ export class TrainingCyclePage {
       }
     })
 
+    trainingDaysList.onConfirm((values) => {
+      console.log({values});
+    })
+
     return Array.from(wrapper.children)
   }
 
@@ -44,6 +48,8 @@ export class TrainingCyclePage {
     const button = document.createElement('button')
     button.innerText = 'Continue'
     button.classList.add('confirm-cycle', 'button', 'full-width')
+    button.setAttribute('form', 'training-days-list')
+    button.setAttribute('type', 'submit')
 
     return button
   }

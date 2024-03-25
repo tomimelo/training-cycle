@@ -1,11 +1,13 @@
 import './style.css'
 import { $, $$ } from '../../utils/dom'
 import { TrainingDayComponent } from '../TrainingDay'
+import { ADD_TRAINING_DAY_BUTTON } from '../../constants/selectors'
 
 export class TrainingDaysListComponent {
   _days = 0
   _element
-  daysChanged = () => {}
+  daysChanged = () => { }
+  confirmed = () => { }
 
   get element() {
     if (this._element) {
@@ -17,8 +19,8 @@ export class TrainingDaysListComponent {
 
   set element(e) {
     this._element = e
-    const trainingCycleDescription = $('div.training-cycle h2')
-    trainingCycleDescription.after(this._element)
+    const addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON)
+    addTrainingDayButton.before(this._element)
   }
 
   static selector = 'form.training-days-list'
@@ -37,8 +39,12 @@ export class TrainingDaysListComponent {
     this._emitDaysChanged()
   }
 
-  onDaysChanged(listener) {
+  onDaysChange(listener) {
     this.daysChanged = listener
+  }
+
+  onConfirm(listener) {
+    this.confirmed = listener
   }
 
   _emitDaysChanged() {
@@ -60,6 +66,14 @@ export class TrainingDaysListComponent {
   _create() {
     const form = document.createElement('form')
     form.classList.add('training-days-list', 'flex-column', 'flex-center')
+    form.setAttribute('id', 'training-days-list')
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+      const formData = new FormData(form)
+      this.confirmed(Array.from(formData.values()))
+    })
+
     return form
   }
 }
