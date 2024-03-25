@@ -43,7 +43,7 @@ export class TrainingDayComponent {
   _createInput(num) {
     const input = document.createElement('input')
     input.setAttribute('type', 'text')
-    input.setAttribute('name', `day${num}`)
+    input.setAttribute('name', `day-${num}`)
     input.setAttribute('required', '')
     return input
   }

@@ -1,3 +1,11 @@
 .training-days-form {
   gap: 1rem;
 }
+
+.start-date-label {
+  gap: 1rem;
+
+  & span {
+    font-weight: bold;
+  }
+}

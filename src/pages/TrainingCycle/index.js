@@ -22,6 +22,10 @@ export class TrainingCyclePage {
       <div class="training-cycle flex-column flex-center">
         <h2>Add your training cycle</h2>
         <form class="training-days-form flex-column flex-center full-width" autocomplete="off">
+          <label class="flex-center start-date-label">
+          <span>Start date:</span>
+          <input type="date" name="start-date" required>
+          </label>
           <button type="button" class="add-training-day full-width">+ Add day</button>
         </form>
       </div>

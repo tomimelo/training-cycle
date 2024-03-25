@@ -32,7 +32,8 @@ export class TrainingDaysFormComponent {
 
   _getFormValues() {
     const formData = new FormData(this.element)
-    return Array.from(formData.values())
+    const [startDate, ...trainings] = Array.from(formData.values())
+    return {startDate, trainings}
   }
 
   _addDay() {
