@@ -7,8 +7,5 @@ export function $$(selector, context = document) {
 }
 
 export function render(context, content) {
-  context.innerHtml = ''
-  content.forEach((element) => {
-    context.appendChild(element)
-  })
+  context.replaceChildren(...content)
 }
