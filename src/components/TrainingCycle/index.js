@@ -1,61 +1,82 @@
 import './style.css'
-import { $ } from '../../utils/dom'
-import {
-  ADD_TRAINING_DAY_BUTTON,
-  CONFIRM_CYCLE,
-} from '../../constants/selectors'
-import { TrainingDaysListComponent } from '../TrainingDaysList'
+import { TrainingDaysFormComponent } from '../TrainingDaysForm'
+import { $, render } from '../../utils/dom'
+import { TrainingDayPickerComponent } from '../TrainingDayPicker'
 
-export class TrainingCyclePage {
+const TRAINING_CYCLE_KEY = 'training-cycle'
+
+export class TrainingCycleComponent {
   static selector = 'div.training-cycle'
-
+  trainingCycle
   content
+  _wrapper
 
   constructor() {
+    this.trainingCycle = this._loadTrainingCycle()
     this.content = this._create()
   }
 
   _create() {
-    const wrapper = this._createWrapper()
-    const trainingDaysList = new TrainingDaysListComponent()
-    const addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON, wrapper)
+    this._wrapper = this._createWrapper()
 
-    addTrainingDayButton.addEventListener('click', function () {
-      trainingDaysList.addDay()
-    })
+    if (!this.trainingCycle) {
+      this._initForm()
+    } else {
+      this._initDayPicker(this.trainingCycle)
+    }
 
-    trainingDaysList.onDaysChanged((days) => {
-      const button = $(CONFIRM_CYCLE)
-
-      if (days && !button) {
-        const createdButton = this._createConfirmCycleButton()
-        $(TrainingCyclePage.selector).appendChild(createdButton)
-      }
-
-      if (!days && button) {
-        button.remove()
-      }
-    })
-
-    return Array.from(wrapper.children)
+    return Array.from(this._wrapper.children)
   }
 
-  _createConfirmCycleButton() {
-    const button = document.createElement('button')
-    button.innerText = 'Continue'
-    button.classList.add('confirm-cycle', 'button', 'full-width')
+  _initForm() {
+    const trainingDaysForm = new TrainingDaysFormComponent()
 
-    return button
+    trainingDaysForm.onConfirm((values) => {
+      localStorage.setItem('training-cycle', JSON.stringify(values))
+      console.log({ values });
+    })
+
+    const context = $(TrainingCycleComponent.selector, this._wrapper)
+    render(context, trainingDaysForm.content)
+  }
+
+  _initDayPicker(trainingCycle) {
+    const trainingDayPicker = new TrainingDayPickerComponent(trainingCycle)
+
+    const context = $(TrainingCycleComponent.selector, this._wrapper)
+    render(context, trainingDayPicker.content)
+  }
+
+  _loadTrainingCycle() {
+    const rawTrainingCycle = localStorage.getItem(TRAINING_CYCLE_KEY)
+    if (!rawTrainingCycle) {
+      return
+    }
+
+    try {
+      const trainingCycle = JSON.parse(rawTrainingCycle)
+      if (this._isTrainingCycleValid(trainingCycle)) {
+        return trainingCycle
+      } else {
+        localStorage.removeItem(TRAINING_CYCLE_KEY)
+      }
+    } catch (e) {
+      localStorage.removeItem(TRAINING_CYCLE_KEY)
+    }
+  }
+
+  _isTrainingCycleValid(trainingCycle) {
+    const trainingsAreValid = Array.isArray(trainingCycle.trainings) && trainingCycle.trainings.length && trainingCycle.trainings.every(t => typeof t === 'string')
+    const startDateIsValid = !isNaN(new Date(trainingCycle.startDate))
+
+    return trainingsAreValid && startDateIsValid
   }
 
   _createWrapper() {
     const wrapper = document.createElement('div')
     wrapper.innerHTML = `
       <h1>Training cycle 💪🏼</h1>
-      <div class="training-cycle flex-column flex-center">
-        <h2>Add your training cycle</h2>
-        <button class="add-training-day full-width">+ Add day</button>
-      </div>
+      <div class="training-cycle flex-column flex-center"></div>
     `
     return wrapper
   }

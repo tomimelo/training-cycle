@@ -66,7 +66,7 @@ export class TrainingDaysFormComponent {
   _create() {
     const wrapper = document.createElement('div')
     wrapper.innerHTML = `
-      <h2>Add your training cycle</h2>
+      <h2>Add your training split</h2>
       <form class="training-days-form flex-column flex-center full-width" autocomplete="off">
         <label class="flex-center start-date-label">
         <span>Start date:</span>
