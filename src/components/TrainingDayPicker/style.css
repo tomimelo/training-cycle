@@ -1,0 +1,14 @@
+.training-description {
+  gap: 0.8rem;
+
+  & span {
+    font-weight: bold;
+  }
+}
+
+.edit-button {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  padding: 0.3rem 0.6rem;
+  border: none;
+}

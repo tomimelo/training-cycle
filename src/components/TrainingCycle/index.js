@@ -31,8 +31,8 @@ export class TrainingCycleComponent {
     }
   }
 
-  _initForm() {
-    const trainingDaysForm = new TrainingDaysFormComponent()
+  _initForm(trainingCycle) {
+    const trainingDaysForm = new TrainingDaysFormComponent(trainingCycle)
 
     trainingDaysForm.onConfirm((values) => {
       localStorage.setItem('training-cycle', JSON.stringify(values))
@@ -44,6 +44,10 @@ export class TrainingCycleComponent {
 
   _initDayPicker(trainingCycle) {
     const trainingDayPicker = new TrainingDayPickerComponent(trainingCycle)
+
+    trainingDayPicker.onEdit(() => {
+      this._initForm(trainingCycle)
+    })
 
     render(this._element, trainingDayPicker.content)
   }

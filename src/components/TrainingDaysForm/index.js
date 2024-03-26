@@ -11,22 +11,39 @@ export class TrainingDaysFormComponent {
   _form
   content
 
-  constructor() {
+  constructor(trainingCycle) {
     const wrapper = this._create()
     this.content = Array.from(wrapper.children)
     this._form = $('form', wrapper)
     this._addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON, this._form)
     this._confirmButton = $(CONFIRM_CYCLE, this._form)
-    this._init()
+    this._init(trainingCycle)
   }
 
   onConfirm(listener) {
     this.confirmed = listener
   }
 
-  _init() {
-    Array.from({ length: 4 }).forEach(() => { this._addDay() })
+  _init(trainingCycle) {
+    if (trainingCycle) {
+      this._populateForm(trainingCycle)
+    } else {
+      Array.from({ length: 4 }).forEach(() => { this._addDay() })
+    }
     this._setupListeners()
+  }
+
+  _populateForm(trainingCycle) {
+    const {startDate, trainings} = trainingCycle
+
+    const startDateInput = $('input[name="start-date"]', this._form)
+    startDateInput.value = startDate
+
+    trainings.forEach((training, i) => {
+      this._addDay()
+      const input = $(`input[name="day-${i+1}"]`, this._form)
+      input.value = training
+    })
   }
 
   _setupListeners() {
@@ -69,8 +86,8 @@ export class TrainingDaysFormComponent {
       <h2>Add your training split</h2>
       <form class="training-days-form flex-column flex-center full-width" autocomplete="off">
         <label class="flex-center start-date-label">
-        <span>Start date:</span>
-        <input type="date" name="start-date" required>
+          <span>Start date:</span>
+          <input type="date" name="start-date" required>
         </label>
         <button type="button" class="add-training-day full-width">+ Add day</button>
         <button type="submit" class="confirm-cycle full-width">Continue</button>
