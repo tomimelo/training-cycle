@@ -14,18 +14,21 @@ export class TrainingCycleComponent {
   constructor() {
     this.trainingCycle = this._loadTrainingCycle()
     this.content = this._create()
+    this._element = $(TrainingCycleComponent.selector, this._wrapper)
+    this._init()
   }
 
   _create() {
     this._wrapper = this._createWrapper()
+    return Array.from(this._wrapper.children)
+  }
 
+  _init() {
     if (!this.trainingCycle) {
       this._initForm()
     } else {
       this._initDayPicker(this.trainingCycle)
     }
-
-    return Array.from(this._wrapper.children)
   }
 
   _initForm() {
@@ -33,18 +36,16 @@ export class TrainingCycleComponent {
 
     trainingDaysForm.onConfirm((values) => {
       localStorage.setItem('training-cycle', JSON.stringify(values))
-      console.log({ values });
+      this._initDayPicker(values)
     })
 
-    const context = $(TrainingCycleComponent.selector, this._wrapper)
-    render(context, trainingDaysForm.content)
+    render(this._element, trainingDaysForm.content)
   }
 
   _initDayPicker(trainingCycle) {
     const trainingDayPicker = new TrainingDayPickerComponent(trainingCycle)
 
-    const context = $(TrainingCycleComponent.selector, this._wrapper)
-    render(context, trainingDayPicker.content)
+    render(this._element, trainingDayPicker.content)
   }
 
   _loadTrainingCycle() {
@@ -78,6 +79,7 @@ export class TrainingCycleComponent {
       <h1>Training cycle 💪🏼</h1>
       <div class="training-cycle flex-column flex-center"></div>
     `
+
     return wrapper
   }
 }
