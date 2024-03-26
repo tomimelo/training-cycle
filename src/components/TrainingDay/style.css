@@ -10,7 +10,7 @@
     background: transparent;
     color: inherit;
     appearance: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: var(--padding);
     transition: all 0.2s ease;
 

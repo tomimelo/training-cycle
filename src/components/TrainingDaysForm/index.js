@@ -6,14 +6,17 @@ import { ADD_TRAINING_DAY_BUTTON, CONFIRM_CYCLE } from '../../constants/selector
 export class TrainingDaysFormComponent {
   _days = 0
   _addTrainingDayButton
-  element
+  _confirmButton
   confirmed = () => { }
-
-  static selector = 'form.training-days-form'
+  _form
+  content
 
   constructor() {
-    this.element = $(TrainingDaysFormComponent.selector)
-    this._addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON)
+    const wrapper = this._create()
+    this.content = Array.from(wrapper.children)
+    this._form = $('form', wrapper)
+    this._addTrainingDayButton = $(ADD_TRAINING_DAY_BUTTON, this._form)
+    this._confirmButton = $(CONFIRM_CYCLE, this._form)
     this._init()
   }
 
@@ -22,21 +25,21 @@ export class TrainingDaysFormComponent {
   }
 
   _init() {
-    Array.from({length: 4}).forEach(() => {this._addDay()})
+    Array.from({ length: 4 }).forEach(() => { this._addDay() })
     this._setupListeners()
   }
 
   _setupListeners() {
     this._addTrainingDayButton.addEventListener('click', () => { this._addDay() })
 
-    this.element.addEventListener('submit', (event) => {
+    this._form.addEventListener('submit', (event) => {
       event.preventDefault()
       this.confirmed(this._getFormValues())
     })
   }
 
   _getFormValues() {
-    const formData = new FormData(this.element)
+    const formData = new FormData(this._form)
     const [startDate, ...trainings] = Array.from(formData.values())
     return { startDate, trainings }
   }
@@ -48,40 +51,31 @@ export class TrainingDaysFormComponent {
     trainingDay.onRemove(() => {
       this._days = Math.max(0, --this._days)
       this._recomputeDays()
-      this._updateConfirmCycleButton()
     })
 
     this._addTrainingDayButton.before(trainingDayElement)
-    this._updateConfirmCycleButton()
   }
 
   _recomputeDays() {
-    const dayLabels = $$('span.training-day-label')
+    const dayLabels = $$('span.training-day-label', this._form)
     dayLabels.forEach((label, index) => {
       label.innerText = `Day ${index + 1}`
     })
   }
 
-  _updateConfirmCycleButton() {
-    const button = $(CONFIRM_CYCLE)
-
-    if (this._days && !button) {
-      const createdButton = this._createConfirmCycleButton()
-      this.element.appendChild(createdButton)
-    }
-
-    if (!this._days && button) {
-      button.remove()
-    }
+  _create() {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = `
+      <h2>Add your training cycle</h2>
+      <form class="training-days-form flex-column flex-center full-width" autocomplete="off">
+        <label class="flex-center start-date-label">
+        <span>Start date:</span>
+        <input type="date" name="start-date" required>
+        </label>
+        <button type="button" class="add-training-day full-width">+ Add day</button>
+        <button type="submit" class="confirm-cycle full-width">Continue</button>
+      </form>
+    `
+    return wrapper
   }
-
-  _createConfirmCycleButton() {
-    const button = document.createElement('button')
-    button.innerText = 'Continue'
-    button.classList.add('confirm-cycle', 'button', 'full-width')
-    button.setAttribute('type', 'submit')
-
-    return button
-  }
-
 }

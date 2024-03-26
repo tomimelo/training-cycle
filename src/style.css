@@ -5,6 +5,7 @@
   background-color: #242424;
   box-sizing: border-box;
   --padding: 0.4rem 0.8rem;
+  --border-radius: 8px;
 }
 
 body {
@@ -33,14 +34,22 @@ body {
 button {
   background-color: transparent;
   border: 2px solid white;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   color: inherit;
   font-weight: bold;
   padding: var(--padding);
-  cursor: pointer;
   transition: all 0.2s;
+  
+  &:not(.disabled) {
+    cursor: pointer;
+  }
 
-  &:hover {
+  &.disabled {
+    color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:hover:not(.disabled) {
     color: black;
     background-color: rgb(255, 255, 255);
   }
