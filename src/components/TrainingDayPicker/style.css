@@ -12,3 +12,7 @@
   padding: 0.3rem 0.6rem;
   border: none;
 }
+
+.date-picker {
+  gap: 1rem;
+}

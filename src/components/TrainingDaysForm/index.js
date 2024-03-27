@@ -87,7 +87,7 @@ export class TrainingDaysFormComponent {
       <form class="training-days-form flex-column flex-center full-width" autocomplete="off">
         <label class="flex-center start-date-label">
           <span>Start date:</span>
-          <input type="date" name="start-date" required>
+          <input class="date-input" type="date" name="start-date" required>
         </label>
         <button type="button" class="add-training-day full-width">+ Add day</button>
         <button type="submit" class="confirm-cycle full-width">Continue</button>
