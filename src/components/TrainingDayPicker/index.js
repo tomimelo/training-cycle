@@ -53,7 +53,7 @@ export class TrainingDayPickerComponent {
 
   _updateWorkout(date) {
     if (date) {
-      const nextWorkout = this._calculateNextWorkout(date)
+      const nextWorkout = this._calculateNextWorkout(new Date(date))
       this._showNextWorkout(nextWorkout)
       return
     }
@@ -63,13 +63,13 @@ export class TrainingDayPickerComponent {
 
   _calculateNextWorkout(date) {
     const { trainings, startDate } = this._trainingCycle
-    const daysDifference = Math.ceil((date.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24)
+    const daysDifference = Math.ceil((date.getTime() - new Date(startDate).getTime()) / 1000 / 60 / 60 / 24)
     const index = daysDifference % trainings.length
     const training = trainings[index]
-    return {name: training, index}
+    return {name: training, day: index+1}
   }
 
-  _showNextWorkout({name, index}) {}
+  _showNextWorkout({name, day}) {}
 
   _removeNextWorkout() {}
 }
