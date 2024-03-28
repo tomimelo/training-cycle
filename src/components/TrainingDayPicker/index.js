@@ -3,15 +3,16 @@ import './style.css'
 
 export class TrainingDayPickerComponent {
   _trainingCycle
-  _wrapper
   content
+  _datePicker
   _edited = () => { }
 
   constructor(trainingCycle) {
     this._trainingCycle = trainingCycle
-    this._wrapper = this._create()
-    this.content = Array.from(this._wrapper.children)
-    this._setupListeners()
+    const wrapper = this._create()
+    this._datePicker = $('div.date-picker', wrapper)
+    this.content = Array.from(wrapper.children)
+    this._setupListeners(wrapper)
   }
 
   onEdit(listener) {
@@ -36,14 +37,14 @@ export class TrainingDayPickerComponent {
     return wrapper
   }
 
-  _setupListeners() {
-    const editButton = $('button.edit-button', this._wrapper)
+  _setupListeners(wrapper) {
+    const editButton = $('button.edit-button', wrapper)
 
     editButton.addEventListener('click', () => {
       this._edited()
     })
 
-    const dateInput = $('input[name="date"]', this._wrapper)
+    const dateInput = $('input[name="date"]', wrapper)
 
     dateInput.addEventListener('change', (event) => {
       const date = event.target.value || undefined
@@ -52,13 +53,11 @@ export class TrainingDayPickerComponent {
   }
 
   _updateWorkout(date) {
+    this._removeNextWorkout()
     if (date) {
       const nextWorkout = this._calculateNextWorkout(new Date(date))
       this._showNextWorkout(nextWorkout)
-      return
     }
-
-    this._removeNextWorkout()
   }
 
   _calculateNextWorkout(date) {
@@ -66,10 +65,27 @@ export class TrainingDayPickerComponent {
     const daysDifference = Math.ceil((date.getTime() - new Date(startDate).getTime()) / 1000 / 60 / 60 / 24)
     const index = daysDifference % trainings.length
     const training = trainings[index]
-    return {name: training, day: index+1}
+    return { name: training, day: index + 1 }
   }
 
-  _showNextWorkout({name, day}) {}
+  _showNextWorkout({ name, day }) {
+    const div = document.createElement('div')
+    div.classList.add('flex-center', 'next-workout-wrapper')
 
-  _removeNextWorkout() {}
+    const span = document.createElement('span')
+    span.innerText = 'Your workout will be:'
+
+    const workoutSpan = document.createElement('span')
+    workoutSpan.classList.add('next-workout')
+    workoutSpan.innerText = `${name} (Day ${day})`
+
+    div.append(span, workoutSpan)
+
+    this._datePicker.after(div)
+  }
+
+  _removeNextWorkout() {
+    const nextWorkout = $('div.next-workout-wrapper')
+    nextWorkout?.remove()
+  }
 }

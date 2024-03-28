@@ -1,6 +1,10 @@
 .training-description {
   gap: 0.8rem;
 
+  & p {
+    margin: 0;
+  }
+
   & span {
     font-weight: bold;
   }
@@ -15,4 +19,13 @@
 
 .date-picker {
   gap: 1rem;
+  margin-top: 2rem;
+}
+
+.next-workout-wrapper {
+  gap: 0.5rem;
+}
+
+.next-workout {
+  font-weight: bold;
 }
