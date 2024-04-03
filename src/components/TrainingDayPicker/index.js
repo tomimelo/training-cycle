@@ -65,7 +65,7 @@ export class TrainingDayPickerComponent {
     const daysDifference = Math.ceil((date.getTime() - new Date(startDate).getTime()) / 1000 / 60 / 60 / 24)
     const index = daysDifference % trainings.length
     const training = trainings[index]
-    const microcycle = Math.ceil(daysDifference / trainings.length)
+    const microcycle = Math.ceil((daysDifference + 1) / trainings.length)
     return { name: training, day: index + 1, microcycle }
   }
 
