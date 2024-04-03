@@ -65,10 +65,11 @@ export class TrainingDayPickerComponent {
     const daysDifference = Math.ceil((date.getTime() - new Date(startDate).getTime()) / 1000 / 60 / 60 / 24)
     const index = daysDifference % trainings.length
     const training = trainings[index]
-    return { name: training, day: index + 1 }
+    const microcycle = Math.ceil(daysDifference / trainings.length)
+    return { name: training, day: index + 1, microcycle }
   }
 
-  _showNextWorkout({ name, day }) {
+  _showNextWorkout({ name, day, microcycle }) {
     const div = document.createElement('div')
     div.classList.add('flex-center', 'next-workout-wrapper')
 
@@ -77,7 +78,7 @@ export class TrainingDayPickerComponent {
 
     const workoutSpan = document.createElement('span')
     workoutSpan.classList.add('next-workout')
-    workoutSpan.innerText = `${name} (Day ${day})`
+    workoutSpan.innerText = `${name} (Day ${day} - Microcycle ${microcycle})`
 
     div.append(span, workoutSpan)
 
